@@ -45,6 +45,8 @@ export default function SingleHome({route, navigation}) {
     'https://raw.githubusercontent.com/AboutReact/sampleresource/master/star_filled.png';
   const starImageCorner =
     'https://raw.githubusercontent.com/AboutReact/sampleresource/master/star_corner.png';
+  const starImageHalf =
+    'https://www.pngfind.com/pngs/m/536-5360734_half-star-icon-white-hd-png-download.png';
 
   return (
     <ScrollView>
@@ -122,6 +124,12 @@ export default function SingleHome({route, navigation}) {
                     source={
                       item <= star
                         ? {uri: starImageFilled}
+                        : item <= star &&
+                          (star == 1.5 ||
+                            star == 2.5 ||
+                            star == 3.5 ||
+                            star == 4.5)
+                        ? {uri: starImageHalf}
                         : {uri: starImageCorner}
                     }
                   />

@@ -10,14 +10,16 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import data from '../assets/json/data.json';
+
 export default class EBooks extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       isLoading: true,
       dataSource: [],
       page: 1,
-      perPage: 4,
+      perPage: 10,
       loadMoreVisible: true,
     };
   }
@@ -52,9 +54,6 @@ export default class EBooks extends React.Component {
         this.setNewData();
       },
     );
-  }
-  sayHello() {
-    Alert.alert('Hello!');
   }
 
   render() {
@@ -99,23 +98,27 @@ export default class EBooks extends React.Component {
           }}
           keyExtractor={(item, index) => index.toString()}
           numColumns={2}
+          ListFooterComponent={() => (
+            <View>
+              {this.state.loadMoreVisible == true ? (
+                <View
+                  style={{
+                    width: 100,
+                    height: 50,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginLeft: 150,
+                  }}>
+                  <Button
+                    onPress={() => this.loadMore()}
+                    title="Load More"
+                    color="grey"
+                  />
+                </View>
+              ) : null}
+            </View>
+          )}
         />
-        {this.state.loadMoreVisible == true ? (
-          <View
-            style={{
-              width: 100,
-              height: 50,
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginLeft: 150,
-            }}>
-            <Button
-              onPress={() => this.loadMore()}
-              title="Load More"
-              color="grey"
-            />
-          </View>
-        ) : null}
       </View>
     );
   }
