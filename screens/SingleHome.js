@@ -37,19 +37,8 @@ export default function SingleHome({route, navigation}) {
     star,
   );
 
-  const [defaultRating, setDefaultRating] = useState(star);
- 
-  const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5]);
-
-  const starImageFilled =
-    'https://raw.githubusercontent.com/AboutReact/sampleresource/master/star_filled.png';
-  const starImageCorner =
-    'https://raw.githubusercontent.com/AboutReact/sampleresource/master/star_corner.png';
-  const starImageHalf =
-    'https://www.pngfind.com/pngs/m/536-5360734_half-star-icon-white-hd-png-download.png';
-
   return (
-    <ScrollView>
+    <ScrollView style={{backgroundColor: '#ebebeb'}}>
       <View style={{margin: 10}}>
         <Text style={{color: 'red', fontSize: 16, fontWeight: 'bold'}}>
           {category}
@@ -108,34 +97,14 @@ export default function SingleHome({route, navigation}) {
           <Text style={{fontSize: 26, fontWeight: 'bold', marginTop: 22}}>
             {rating}
           </Text>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              marginLeft: 20,
-              marginTop: 22,
-            }}>
-            {maxRating.map((item, key) => {
-              console.log('defaultRating', star);
-              return (
-                <TouchableOpacity activeOpacity={0.7} key={item}>
-                  <Image
-                    style={{height: 30, width: 30, resizeMode: 'cover'}}
-                    source={
-                      item <= star
-                        ? {uri: starImageFilled}
-                        : item <= star &&
-                          (star == 1.5 ||
-                            star == 2.5 ||
-                            star == 3.5 ||
-                            star == 4.5)
-                        ? {uri: starImageHalf}
-                        : {uri: starImageCorner}
-                    }
-                  />
-                </TouchableOpacity>
-              );
-            })}
+          <View style={{marginLeft: 18, marginTop: 20}}>
+            <Rating
+              showRating
+              tintColor="#ebebeb"
+              showRating={false}
+              fractions="{1}"
+              startingValue={star}
+            />
           </View>
         </View>
         <View>
