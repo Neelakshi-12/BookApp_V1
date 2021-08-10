@@ -38,7 +38,7 @@ export default function SingleHome({route, navigation}) {
   );
 
   const [defaultRating, setDefaultRating] = useState(star);
-  // To set the max number of Stars
+ 
   const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5]);
 
   const starImageFilled =
