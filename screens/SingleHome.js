@@ -1,37 +1,12 @@
-// import React from 'react';
-// import {Button, View, Text, TouchableOpacity, Image} from 'react-native';
-// import data from '../assets/json/data.json';
-
-// function SingleHome({route, navigation}) {
-//   /* 2. Get the param */
-//   const {itemId} = route.params;
-//   const {otherParam} = route.params;
-//   return (
-//     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-//       <Text>Details Screen</Text>
-//       <Text>itemId: {JSON.stringify(itemId)}</Text>
-//       <Text>otherParam: {JSON.stringify(otherParam)}</Text>
-//       <Button
-//         title="Go to Details... again"
-//         onPress={() =>
-//           navigation.push('SingleHome', {
-//             itemId: Math.floor(Math.random() * 100),
-//           })
-//         }
-//       />
-//       <Button
-//         title="Go to Home"
-//         onPress={() => navigation.navigate('EBooks')}
-//       />
-//       <Button title="Go back" onPress={() => navigation.goBack()} />
-//     </View>
-//   );
-// }
-
-// export default SingleHome;
-
-import React from 'react';
-import {Button, View, Text, TouchableOpacity, Image} from 'react-native';
+import React, {useState} from 'react';
+import {
+  Button,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import book1 from '../assets/book1.jpg';
 import {Rating, AirbnbRating} from 'react-native-elements';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -47,6 +22,7 @@ export default function SingleHome({route, navigation}) {
     publishedFrom,
     category,
     image,
+    star,
   } = route.params;
   console.log(
     'data',
@@ -58,14 +34,24 @@ export default function SingleHome({route, navigation}) {
     publishedFrom,
     category,
     image,
+    star,
   );
+
+  const [defaultRating, setDefaultRating] = useState(star);
+  // To set the max number of Stars
+  const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5]);
+
+  const starImageFilled =
+    'https://raw.githubusercontent.com/AboutReact/sampleresource/master/star_filled.png';
+  const starImageCorner =
+    'https://raw.githubusercontent.com/AboutReact/sampleresource/master/star_corner.png';
+
   return (
     <ScrollView>
       <View style={{margin: 10}}>
         <Text style={{color: 'red', fontSize: 16, fontWeight: 'bold'}}>
           {category}
         </Text>
-        {/* <Text>itemId: {JSON.stringify(itemId)}</Text> */}
         <Text style={{fontSize: 28, fontFamily: 'serif', marginTop: 10}}>
           {itemTitle}
         </Text>
@@ -120,17 +106,29 @@ export default function SingleHome({route, navigation}) {
           <Text style={{fontSize: 26, fontWeight: 'bold', marginTop: 22}}>
             {rating}
           </Text>
-          <Text>
-            <View>
-              <AirbnbRating
-                count={5}
-                reviews
-                reviewSize={6}
-                defaultRating={5}
-                size={20}
-              />
-            </View>
-          </Text>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              marginLeft: 20,
+              marginTop: 22,
+            }}>
+            {maxRating.map((item, key) => {
+              console.log('defaultRating', star);
+              return (
+                <TouchableOpacity activeOpacity={0.7} key={item}>
+                  <Image
+                    style={{height: 30, width: 30, resizeMode: 'cover'}}
+                    source={
+                      item <= star
+                        ? {uri: starImageFilled}
+                        : {uri: starImageCorner}
+                    }
+                  />
+                </TouchableOpacity>
+              );
+            })}
+          </View>
         </View>
         <View>
           <Text style={{color: 'grey', marginTop: 8}}>
@@ -152,3 +150,11 @@ export default function SingleHome({route, navigation}) {
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  starImageStyle: {
+    width: 30,
+    height: 30,
+    resizeMode: 'cover',
+  },
+});

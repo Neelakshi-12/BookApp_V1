@@ -6,6 +6,7 @@ import {
   FlatList,
   Image,
   Button,
+  Alert,
   TouchableOpacity,
 } from 'react-native';
 import data from '../assets/json/data.json';
@@ -15,20 +16,50 @@ export default class EBooks extends React.Component {
     this.state = {
       isLoading: true,
       dataSource: [],
+      page: 1,
+      perPage: 4,
+      loadMoreVisible: true,
     };
   }
 
   componentDidMount() {
-    this.setState({
-      isLoading: false,
-      dataSource: data.info,
-    });
+    this.setNewData();
   }
-  // .props.navigation.navigate('SingleHome')
+
+  setNewData() {
+    var tempArray = [];
+    if (data.info.length == this.state.dataSource.length) {
+      this.setState({
+        loadMoreVisible: false,
+      });
+    } else {
+      for (var i = 0; i < this.state.page * this.state.perPage; i++) {
+        tempArray.push(data.info[i]);
+      }
+      this.setState({
+        dataSource: tempArray,
+        loadMoreVisible: true,
+      });
+    }
+  }
+  loadMore() {
+    console.log('loadmore');
+    this.setState(
+      {
+        page: this.state.page + 1,
+      },
+      () => {
+        this.setNewData();
+      },
+    );
+  }
+  sayHello() {
+    Alert.alert('Hello!');
+  }
 
   render() {
-    if (this.state.isLoading) {
-      return <View style={{flex: 1, paddingTop: 20}}></View>;
+    {
+      console.log('this.state.loadMoreVisible ', this.state.loadMoreVisible);
     }
     return (
       <View style={styles.container}>
@@ -38,10 +69,8 @@ export default class EBooks extends React.Component {
           renderItem={({item}) => {
             return (
               <View style={styles.listItem}>
-                {/* <Text>{item.id}</Text> */}
                 <TouchableOpacity
                   onPress={() => {
-                    /* 1. Navigate to the Details route with params */
                     this.props.navigation.navigate('SingleHome', {
                       itemId: item.id,
                       itemTitle: item.title,
@@ -51,6 +80,7 @@ export default class EBooks extends React.Component {
                       publishedFrom: item.published_From,
                       category: item.category,
                       image: item.photo,
+                      star: item.stars,
                     });
                   }}
                   style={{flex: 1}}>
@@ -59,7 +89,7 @@ export default class EBooks extends React.Component {
                     style={{
                       resizeMode: 'cover',
                       flex: 1,
-                      aspectRatio: 0.5,
+                      aspectRatio: 0.6,
                       borderRadius: 10,
                     }}
                   />
@@ -70,6 +100,22 @@ export default class EBooks extends React.Component {
           keyExtractor={(item, index) => index.toString()}
           numColumns={2}
         />
+        {this.state.loadMoreVisible == true ? (
+          <View
+            style={{
+              width: 100,
+              height: 50,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginLeft: 150,
+            }}>
+            <Button
+              onPress={() => this.loadMore()}
+              title="Load More"
+              color="grey"
+            />
+          </View>
+        ) : null}
       </View>
     );
   }
