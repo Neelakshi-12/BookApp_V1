@@ -23,7 +23,6 @@ export default class EBooks extends React.Component {
       loadMoreVisible: true,
     };
   }
-
   componentDidMount() {
     this.setNewData();
   }
