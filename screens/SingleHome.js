@@ -38,7 +38,7 @@ export default function SingleHome({route, navigation}) {
   );
 
   return (
-    <ScrollView style={{backgroundColor: '#ebebeb'}}>
+    <ScrollView style={{backgroundColor: '#ffffff'}}>
       <View style={{margin: 10}}>
         <Text style={{color: 'red', fontSize: 16, fontWeight: 'bold'}}>
           {category}
@@ -100,7 +100,7 @@ export default function SingleHome({route, navigation}) {
           <View style={{marginLeft: 18, marginTop: 20}}>
             <Rating
               showRating
-              tintColor="#ebebeb"
+              tintColor="#ffffff"
               showRating={false}
               fractions="{1}"
               startingValue={star}
