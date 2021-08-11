@@ -18,9 +18,9 @@ function App({navigation}) {
           options={({navigation}) => ({
             drawerLabel: 'All Books',
             headerTitleAlign: 'center',
-            headerRight: () => (
-              <Icon raised name="search" type="ionicon" color="#000" />
-            ),
+            // headerRight: () => (
+            //   <Icon raised name="search" type="ionicon" color="#000" />
+            // ),
           })}
         />
         <Drawer.Screen

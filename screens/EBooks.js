@@ -7,6 +7,7 @@ import {
   Image,
   Button,
   Alert,
+  TextInput,
   TouchableOpacity,
 } from 'react-native';
 import data from '../assets/json/data.json';
@@ -21,7 +22,9 @@ export default class EBooks extends React.Component {
       page: 1,
       perPage: 10,
       loadMoreVisible: true,
+      text: '',
     };
+    this.arrayholder = [];
   }
   componentDidMount() {
     this.setNewData();
@@ -41,7 +44,9 @@ export default class EBooks extends React.Component {
         dataSource: tempArray,
         loadMoreVisible: true,
       });
+      this.arrayholder = data.info;
     }
+    console.log('this.arrayHolder', this.arrayholder);
   }
   loadMore() {
     console.log('loadmore');
@@ -54,13 +59,31 @@ export default class EBooks extends React.Component {
       },
     );
   }
+  searchData(text) {
+    const newData = this.arrayholder.filter(item => {
+      const itemData = item.title.toUpperCase();
+      const textData = text.toUpperCase();
+      return itemData.indexOf(textData) > -1;
+    });
 
+    this.setState({
+      dataSource: newData,
+      text: text,
+    });
+  }
   render() {
     {
       console.log('this.state.loadMoreVisible ', this.state.loadMoreVisible);
     }
     return (
       <View style={styles.container}>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={text => this.searchData(text)}
+          value={this.state.text}
+          underlineColorAndroid="transparent"
+          placeholder="Enter Title Here"
+        />
         <FlatList
           style={{flex: 1}}
           data={this.state.dataSource}
@@ -138,5 +161,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flexDirection: 'row',
     borderRadius: 5,
+  },
+  textInput: {
+    textAlign: 'center',
+    height: 42,
+    borderWidth: 1,
+    borderColor: 'grey',
+    borderRadius: 8,
+    backgroundColor: '#FFFF',
   },
 });
