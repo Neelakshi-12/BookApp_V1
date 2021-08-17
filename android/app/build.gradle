@@ -130,6 +130,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+
     defaultConfig {
         applicationId "com.books_app_v1"
         minSdkVersion rootProject.ext.minSdkVersion

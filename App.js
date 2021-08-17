@@ -5,9 +5,11 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import SingleHome from './screens/SingleHome';
+import SingleAudioBook from './screens/SingleAudioBook';
+
 import About from './components/About';
 import ContactUs from './components/ContactUs';
-import BestServices from './components/BestServices';
+import BookMarks from './components/BookMarks';
 import {Icon} from 'react-native-elements';
 import AudioBooks from './screens/AudioBooks';
 import EBooks from './screens/EBooks';
@@ -68,6 +70,7 @@ function EBooksPage() {
         //  options={{headerShown: false}}
       />
       <Stack.Screen name="SingleHome" component={SingleHome} />
+      <Stack.Screen name="SingleAudioBook" component={SingleAudioBook} />
     </Stack.Navigator>
   );
 }
@@ -100,8 +103,8 @@ export default function App() {
           options={{headerTitleAlign: 'center'}}
         />
         <Drawer.Screen
-          name="BestServices"
-          component={BestServices}
+          name="BookMarks"
+          component={BookMarks}
           options={{headerTitleAlign: 'center'}}
         />
       </Drawer.Navigator>

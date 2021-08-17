@@ -8,9 +8,10 @@ import {
   Button,
   Alert,
   TextInput,
+  AsyncStorage,
   TouchableOpacity,
 } from 'react-native';
-import data from '../assets/json/data.json';
+import data from '../assets/json/data';
 
 export default class EBooks extends React.Component {
   constructor(props) {
@@ -23,14 +24,20 @@ export default class EBooks extends React.Component {
       perPage: 10,
       loadMoreVisible: true,
       text: '',
+      allData: data.info,
     };
     this.arrayholder = [];
+    this.getDataFromAsyncStorage();
   }
   componentDidMount() {
     this.setNewData();
+    console.log(
+      'alllllllllllllllllllllllll daaaaaaaaaaaatttttttttttttttaaaaaaaaaaaaaa',
+      this.state.allData,
+    );
   }
 
-  setNewData() {
+  setNewData = async () => {
     var tempArray = [];
     if (data.info.length == this.state.dataSource.length) {
       this.setState({
@@ -45,9 +52,16 @@ export default class EBooks extends React.Component {
         loadMoreVisible: true,
       });
       this.arrayholder = data.info;
+      try {
+        let data = this.arrayholder;
+        await AsyncStorage.setItem('data', JSON.stringify(data));
+        console.log('Data Saved in Asyncstorage', data);
+      } catch (error) {
+        console.log('Error of Asyncstorage', error.message);
+      }
     }
     console.log('this.arrayHolder', this.arrayholder);
-  }
+  };
   loadMore() {
     console.log('loadmore');
     this.setState(
@@ -59,6 +73,22 @@ export default class EBooks extends React.Component {
       },
     );
   }
+  getDataFromAsyncStorage = async () => {
+    try {
+      let data = await AsyncStorage.getItem('data');
+      if (data === null) {
+        data = this.arrayholder;
+        await AsyncStorage.setItem('data', JSON.stringify(data));
+        this.setState({data: data});
+      }
+      data = JSON.parse(data);
+      this.setState({data: data});
+      console.log('Data got from Asyncstorage', this.state.data);
+    } catch (error) {
+      console.log('Error of Asyncstorage', error.message);
+    }
+  };
+
   searchData(text) {
     const newData = this.arrayholder.filter(item => {
       const itemData = item.title.toUpperCase();
@@ -102,6 +132,7 @@ export default class EBooks extends React.Component {
                       category: item.category,
                       image: item.photo,
                       star: item.stars,
+                      bookmark: item.completed,
                     });
                   }}
                   style={{flex: 1}}>

@@ -5,88 +5,135 @@ import {
   View,
   FlatList,
   Image,
+  Button,
+  Alert,
+  TextInput,
+  AsyncStorage,
   TouchableOpacity,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-function Item({item}) {
-  const navigation = useNavigation();
-  return (
-    <View style={styles.listItem}>
-      <TouchableOpacity onPress={() => navigation.navigate('SingleHome')}>
-        <Image
-          source={{uri: item.photo}}
-          style={{height: 100, width: 150, borderRadius: 10}}
-        />
-      </TouchableOpacity>
-    </View>
-  );
-}
+import data from '../assets/json/data';
 
 export default class AudioBooks extends React.Component {
-  state = {
-    data: [
-      {
-        id: 1,
-        photo:
-          'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1328759670l/832619.jpg',
-      },
-      {
-        id: 2,
-        photo:
-          'https://cdn.aarp.net/content/dam/aarp/entertainment/books/2020/10/1140-the-only-good-indians.imgcache.rev.web.300.456.jpg',
-      },
-      {
-        id: 3,
-        photo:
-          'https://cdn.aarp.net/content/dam/aarp/entertainment/books/2020/10/1140-the-grownup.imgcache.rev.web.300.456.jpg',
-      },
-      {
-        id: 4,
-        photo:
-          'https://cdn.aarp.net/content/dam/aarp/entertainment/books/2020/10/1140-fever-dream.imgcache.rev.web.300.456.jpg',
-      },
-      {
-        id: 5,
-        photo:
-          'https://cdn.aarp.net/content/dam/aarp/entertainment/books/2020/10/1140-a-head-full-of-ghosts.imgcache.rev.web.300.456.jpg',
-      },
-      {
-        id: 6,
-        photo:
-          'https://cdn.aarp.net/content/dam/aarp/entertainment/books/2020/10/1140-salems-lot.imgcache.rev.web.300.456.jpg',
-      },
-      {
-        id: 7,
-        photo:
-          'https://cdn.aarp.net/content/dam/aarp/entertainment/books/2020/10/1140-the-woman-in-black.imgcache.rev.web.300.456.jpg',
-      },
-      {
-        id: 8,
-        photo:
-          'https://cdn.aarp.net/content/dam/aarp/entertainment/books/2020/10/1140-the-haunting-of-mill-house.imgcache.rev.web.300.456.jpg',
-      },
-      {
-        id: 9,
-        photo:
-          'https://cdn.aarp.net/content/dam/aarp/entertainment/books/2020/10/1140-the-turn-of-the-screw.imgcache.rev.web.300.456.jpg',
-      },
-      {
-        id: 10,
-        photo:
-          'https://cdn.aarp.net/content/dam/aarp/entertainment/books/2020/10/1140-the-shining.imgcache.rev.web.300.462.jpg',
-      },
-    ],
-  };
+  constructor(props) {
+    super(props);
 
+    this.state = {
+      isLoading: true,
+      dataSource: [],
+      page: 1,
+      perPage: 10,
+      loadMoreVisible: true,
+      text: '',
+    };
+  }
+  componentDidMount() {
+    this.setNewData();
+  }
+
+  setNewData = async () => {
+    var tempArray = [];
+    if (data.info.length == this.state.dataSource.length) {
+      this.setState({
+        loadMoreVisible: false,
+      });
+    } else {
+      for (var i = 0; i < this.state.page * this.state.perPage; i++) {
+        tempArray.push(data.info[i]);
+      }
+      this.setState({
+        dataSource: tempArray,
+        loadMoreVisible: true,
+      });
+    }
+    console.log('this.arrayHolder', this.arrayholder);
+  };
+  loadMore() {
+    console.log('loadmore');
+    this.setState(
+      {
+        page: this.state.page + 1,
+      },
+      () => {
+        this.setNewData();
+      },
+    );
+  }
+
+  searchData(text) {
+    const newData = this.arrayholder.filter(item => {
+      const itemData = item.title.toUpperCase();
+      const textData = text.toUpperCase();
+      return itemData.indexOf(textData) > -1;
+    });
+
+    this.setState({
+      dataSource: newData,
+      text: text,
+    });
+  }
   render() {
     return (
       <View style={styles.container}>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={text => this.searchData(text)}
+          value={this.state.text}
+          underlineColorAndroid="transparent"
+          placeholder="Enter Title Here"
+        />
         <FlatList
           style={{flex: 1}}
-          data={this.state.data}
-          renderItem={({item}) => <Item item={item} />}
-          keyExtractor={item => item.id}
+          data={this.state.dataSource}
+          renderItem={({item}) => {
+            return (
+              <View style={styles.listItem}>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.props.navigation.navigate('SingleAudioBook', {
+                      itemId: item.id,
+                      itemTitle: item.title,
+                      description: item.desc,
+                      date: item.published_Data,
+                      rating: item.Rating,
+                      publishedFrom: item.published_From,
+                      category: item.category,
+                      image: item.photo,
+                      star: item.stars,
+                      bookmark: item.completed,
+                      audio: item.audio,
+                    });
+                  }}
+                  style={{flex: 1}}>
+                  <Image
+                    source={{uri: item.photo}}
+                    style={{height: 100, width: 150, borderRadius: 10}}
+                  />
+                </TouchableOpacity>
+              </View>
+            );
+          }}
+          keyExtractor={(item, index) => index.toString()}
           numColumns={2}
+          ListFooterComponent={() => (
+            <View>
+              {this.state.loadMoreVisible == true ? (
+                <View
+                  style={{
+                    width: 100,
+                    height: 50,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginLeft: 150,
+                  }}>
+                  <Button
+                    onPress={() => this.loadMore()}
+                    title="Load More"
+                    color="grey"
+                  />
+                </View>
+              ) : null}
+            </View>
+          )}
         />
       </View>
     );
@@ -108,5 +155,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flexDirection: 'row',
     borderRadius: 5,
+  },
+  textInput: {
+    textAlign: 'center',
+    height: 42,
+    borderWidth: 1,
+    borderColor: 'grey',
+    borderRadius: 8,
+    backgroundColor: '#FFFF',
   },
 });
