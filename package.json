@@ -29,12 +29,16 @@
     "react-native-safe-area-context": "^3.3.0",
     "react-native-safe-area-view": "^1.1.1",
     "react-native-screens": "^3.5.0",
+    "react-native-simple-audio-player": "^1.0.1",
+    "react-native-slider": "^0.11.0",
+    "react-native-sound": "^0.11.0",
     "react-native-tab-view": "^3.1.1",
-    "react-native-track-player": "^2.0.0-rc18",
     "react-native-vector-icons": "^8.1.0",
+    "react-native-video": "^5.1.1",
     "react-navigation": "^4.4.4",
     "react-navigation-drawer": "^2.7.1",
-    "react-navigation-stack": "^2.10.4"
+    "react-navigation-stack": "^2.10.4",
+    "rn-fetch-blob": "^0.12.0"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",

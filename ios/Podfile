@@ -14,6 +14,8 @@ target 'Books_App_V1' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'RNSound', :path => '../node_modules/react-native-sound'
+
   target 'Books_App_V1Tests' do
     inherit! :complete
     # Pods for testing

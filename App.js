@@ -4,15 +4,16 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {NavigationContainer} from '@react-navigation/native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
-import SingleHome from './screens/SingleHome';
-import SingleAudioBook from './screens/SingleAudioBook';
+import SingleHome from './src/screens/SingleHome';
+import SingleAudioBook from './src/screens/SingleAudioBook';
+import AudioBook from './src/screens/AudioBook';
 
-import About from './components/About';
-import ContactUs from './components/ContactUs';
-import BookMarks from './components/BookMarks';
+import About from './src/components/About';
+import ContactUs from './src/components/ContactUs';
+import BookMarks from './src/components/BookMarks';
 import {Icon} from 'react-native-elements';
-import AudioBooks from './screens/AudioBooks';
-import EBooks from './screens/EBooks';
+import AudioBooks from './src/screens/AudioBooks';
+import EBooks from './src/screens/EBooks';
 
 const Tab = createMaterialTopTabNavigator();
 function HomeScreen() {
@@ -71,6 +72,7 @@ function EBooksPage() {
       />
       <Stack.Screen name="SingleHome" component={SingleHome} />
       <Stack.Screen name="SingleAudioBook" component={SingleAudioBook} />
+      <Stack.Screen name="AudioBook" component={AudioBook} />
     </Stack.Navigator>
   );
 }
